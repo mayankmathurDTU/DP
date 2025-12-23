@@ -1,0 +1,49 @@
+# ===== ALGORITHM EXPLANATION (6–7 lines) =====
+# This algorithm uses recursion and backtracking to find all combinations that sum to target.
+# At each index, we have two choices: include the current element or skip it.
+# If we include it, we do not move the index forward (element can be reused).
+# If we skip it, we move to the next index.
+# When target becomes 0, the current combination is valid and stored.
+# If target becomes negative or index goes out of bounds, recursion stops.
+# Backtracking ensures we undo choices before exploring other paths.
+
+# ===== CODE WITH LINE-BY-LINE COMMENTS =====
+
+class Solution {                                   # Defines the Solution class
+public:
+    void solve(vector<int>& arr,                   # Input array of candidates
+               int t,                              # Remaining target sum
+               int x,                              # Current index in array
+               vector<vector<int>>& answer,        # Stores all valid combinations
+               vector<int>& ans) {                 # Current combination being built
+
+        if(t == 0){                                # If target is exactly achieved
+            answer.push_back(ans);                 # Store current combination
+            return;                                # Stop further recursion
+        }
+
+        if(t < 0) return;                          # Stop if target becomes negative
+
+        if(x == arr.size()) return;                # Stop if index goes out of bounds
+
+        ans.push_back(arr[x]);                     # Choose current element
+        solve(arr, t - arr[x], x, answer, ans);    # Recurse without moving index (reuse allowed)
+
+        ans.pop_back();                            # Backtrack: remove last chosen element
+        solve(arr, t, x + 1, answer, ans);         # Skip current element and move forward
+
+        return;                                    # End of recursive call
+    }
+
+    vector<vector<int>> combinationSum(             # Main function called by user
+        vector<int>& candidates,                    # Input candidate numbers
+        int target) {                               # Target sum
+
+        vector<vector<int>> answer;                 # To store all combinations
+        vector<int> ans;                            # Temporary combination holder
+
+        solve(candidates, target, 0, answer, ans); # Start recursion from index 0
+
+        return answer;                              # Return all valid combinations
+    }
+};
