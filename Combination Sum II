@@ -1,0 +1,45 @@
+https://leetcode.com/problems/combination-sum-ii/description/
+
+
+# ================= ALGORITHM (6–7 lines, simple) =================
+# 1) Sort the array to handle duplicates easily.
+# 2) Use backtracking to try all combinations starting from a given index.
+# 3) If target becomes 0, store the current combination as a valid answer.
+# 4) If target goes negative or index exceeds size, stop that path.
+# 5) Skip duplicate elements at the same recursion level.
+# 6) Move to the next index to ensure each element is used only once.
+# 7) Backtrack by removing the last chosen element.
+
+# ================= FULL CODE WITH LINE-BY-LINE COMMENTS =================
+
+class Solution {
+public:
+    void solve(vector<int>& arr, int t, int x,                // backtracking helper function
+               vector<vector<int>>& answer, vector<int>& ans) {
+
+        if(t == 0) {                                         // if target is exactly met
+            answer.push_back(ans);                            // store current combination
+            return;                                           // stop further recursion
+        }
+
+        if(t < 0) return;                                     // stop if target becomes negative
+        if(x >= arr.size()) return;                           // stop if index goes out of bounds
+
+        for(int i = x; i < arr.size(); i++) {                 // iterate over choices from index x
+            if(i != x && arr[i] == arr[i-1]) continue;        // skip duplicate elements
+
+            ans.push_back(arr[i]);                            // choose current element
+            solve(arr, t - arr[i], i + 1, answer, ans);       // recurse with reduced target
+            ans.pop_back();                                   // backtrack to try next choice
+        }
+    }
+
+    vector<vector<int>> combinationSum2(vector<int>& arr, int t) {
+        sort(arr.begin(), arr.end());                          // sort array to manage duplicates
+        vector<vector<int>> answer;                            // stores all valid combinations
+        vector<int> ans;                                       // stores current combination
+
+        solve(arr, t, 0, answer, ans);                          // start backtracking from index 0
+        return answer;                                         // return all unique combinations
+    }
+};
