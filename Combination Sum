@@ -1,3 +1,5 @@
+https://leetcode.com/problems/combination-sum/description/
+
 # ===== ALGORITHM EXPLANATION (6–7 lines) =====
 # This algorithm uses recursion and backtracking to find all combinations that sum to target.
 # At each index, we have two choices: include the current element or skip it.
